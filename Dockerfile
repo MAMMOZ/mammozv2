@@ -4,17 +4,15 @@ FROM node:18
 # Step 2: Set the working directory inside the container
 WORKDIR /app
 
-# Step 3: Copy package.json and package-lock.json first
-COPY backend/package*.json ./
+# Step 3: Copy only the backend directory
+COPY backend/ ./backend/
 
-# Step 4: Install dependencies
+# Step 4: Change directory to backend and install dependencies
+WORKDIR /app/backend
 RUN npm install
 
-# Step 5: Copy the rest of the backend code
-COPY backend/ ./
-
-# Step 6: Expose the application port
+# Step 5: Expose the application port
 EXPOSE 3000
 
-# Step 7: Start the application
+# Step 6: Start the application
 CMD ["node", "index.js"]
