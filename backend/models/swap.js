@@ -1,11 +1,15 @@
 // models/swap.js
 const mongoose = require('mongoose');
 
-const swapSchema = new mongoose.Schema({
+const SwapSchema = new mongoose.Schema({
     key: String,
+    pc: String,
     bot: String,
     cookie: String,
+    map: Number,
     status: Number
 });
 
-module.exports = mongoose.model('Swap', swapSchema);
+const Swap = mongoose.model('Swap', SwapSchema);
+
+module.exports = { Swap };
