@@ -25,6 +25,7 @@ file_path = 'config.json'
 with open(file_path, 'r') as file:
     config = json.load(file)
 
+base_path= config[0]['base_path']
 sleep_value = config[0]['sleep']
 key_value = config[0]['key']
 pc_value = config[0]['pc']
@@ -166,7 +167,6 @@ def get_connected_devices():
         log.error(f"Error: {e}")
         return []
     
-
 def getcookie():
     url = "https://cm150lytp0000mnbs5qitvejv.iservkmitl.tech/swap/programget"
     data = {
@@ -178,7 +178,7 @@ def getcookie():
     if response.status_code == 200:
         res = response.json()
         if res['cookie']:
-            return res['cookie']
+            return res['cookie'], res['device']
     else:
         return ""
     
@@ -195,10 +195,9 @@ def getUer(cookie):
         return ""
 
 
-def process_device(device):
+def process_device():
+    cookieee, device = getcookie()
     d = ADeAuto(device)
-
-    cookieee = getcookie()
     print(cookieee)
     if cookieee:
         current_directory = os.getcwd()
@@ -231,15 +230,17 @@ def aaa():
     connected_devices = get_connected_devices()
     print(connected_devices)
     set_window_title(f"MAMMOZ X EMU X {len(connected_devices)} | https://discord.gg/N8KH7yAfkP")
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-        executor.map(process_device, connected_devices)
+    process_device()
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+    #     executor.map(process_device, connected_devices)
+    
 
 
 while True:
     # set_window_title(f"MAMMOZ X EMU X TTD | https://discord.gg/N8KH7yAfkP")
     try:
         aaa()
-        # time.sleep(30)
+        time.sleep(int(sleep_value))
     except:
         print("error")
         aaa()
